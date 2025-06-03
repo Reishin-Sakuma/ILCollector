@@ -490,8 +490,9 @@ class ModernILCollector:
             ))
             
         except Exception as e:
+            error_msg = f"イベントログの出力中にエラーが発生しました:\n{str(e)}"  # エラーメッセージを変数に保存
             self.root.after(0, self.hide_progress)
-            self.root.after(0, lambda: self.show_modern_error("エラー", f"イベントログの出力中にエラーが発生しました:\n{str(e)}"))
+            self.root.after(0, lambda msg=error_msg: self.show_modern_error("エラー", msg))  # デフォルト引数で値を固定
     
     def export_all(self):
         """すべてのログ・情報を一括取得する（メインスレッド）"""
@@ -548,8 +549,9 @@ class ModernILCollector:
             ))
             
         except Exception as e:
+            error_msg = f"ログ・情報の出力中にエラーが発生しました:\n{str(e)}"  # エラーメッセージを変数に保存
             self.root.after(0, self.hide_progress)
-            self.root.after(0, lambda: self.show_modern_error("エラー", f"ログ・情報の出力中にエラーが発生しました:\n{str(e)}"))
+            self.root.after(0, lambda msg=error_msg: self.show_modern_error("エラー", msg))  # デフォルト引数で値を固定
     
     def export_msinfo(self):
         """msinfo32の情報をファイルに出力する（メインスレッド）"""
@@ -580,8 +582,9 @@ class ModernILCollector:
                 self.export_systeminfo_alternative(output_file)
                 
         except Exception as e:
+            error_msg = f"システム情報の出力中にエラーが発生しました:\n{str(e)}"  # エラーメッセージを変数に保存
             self.root.after(0, self.hide_progress)
-            self.root.after(0, lambda: self.show_modern_error("エラー", f"システム情報の出力中にエラーが発生しました:\n{str(e)}"))
+            self.root.after(0, lambda msg=error_msg: self.show_modern_error("エラー", msg))  # デフォルト引数で値を固定
     
     def export_systeminfo_alternative(self, output_file):
         """代替方法でシステム情報を出力する"""
@@ -610,8 +613,9 @@ class ModernILCollector:
                 raise Exception("systeminfoコマンドも失敗しました")
                 
         except Exception as e:
+            error_msg = f"システム情報の取得に失敗しました:\n{str(e)}"  # エラーメッセージを変数に保存
             self.root.after(0, self.hide_progress)
-            self.root.after(0, lambda: self.show_modern_error("エラー", f"システム情報の取得に失敗しました:\n{str(e)}"))
+            self.root.after(0, lambda msg=error_msg: self.show_modern_error("エラー", msg))  # デフォルト引数で値を固定
     
     def get_eventlog(self, log_name, output_file):
         """指定されたイベントログを取得してCSVに保存する"""
