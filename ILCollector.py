@@ -15,6 +15,7 @@ class ModernILCollector:
         self.root = tk.Tk()
         self.root.title("ILCollector - イベントログ収集ツール")
         self.root.geometry("800x600")
+        self.root.minsize(400, 300)  # 最小サイズを設定
         self.root.resizable(True, True)
         
         # モダンな配色テーマ
@@ -94,8 +95,26 @@ class ModernILCollector:
     
     def create_modern_widgets(self):
         """モダンなUIコンポーネントを作成"""
-        # メインコンテナ
-        main_container = tk.Frame(self.root, bg=self.colors['bg_primary'])
+        # スクロール可能なキャンバスとスクロールバーを作成
+        canvas = tk.Canvas(self.root, bg=self.colors['bg_primary'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(self.root, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.colors['bg_primary'])
+        
+        # スクロール可能フレームの設定
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # キャンバスとスクロールバーの配置
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # メインコンテナをスクロール可能フレーム内に作成
+        main_container = tk.Frame(scrollable_frame, bg=self.colors['bg_primary'])
         main_container.pack(fill="both", expand=True, padx=30, pady=30)
         
         # ヘッダーセクション
@@ -110,6 +129,24 @@ class ModernILCollector:
         
         # フッターセクション
         self.create_footer(main_container)
+        
+        # マウスホイールスクロールの設定
+        self.bind_mousewheel(canvas)
+
+    # マウスホイールスクロール用のメソッドを追加
+    def bind_mousewheel(self, canvas):
+        """マウスホイールでのスクロールを有効化"""
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
     
     def create_header(self, parent):
         """ヘッダーセクションを作成"""
@@ -153,9 +190,9 @@ class ModernILCollector:
             "System・Applicationログを\nCSVファイルとして出力",
             "Primary.TButton",
             self.export_eventlogs,
-            row=0, col=0
+            row=0, col=0, colspan=1
         )
-        
+
         # カード2: システム情報出力
         card2 = self.create_card(
             cards_frame,
@@ -163,24 +200,24 @@ class ModernILCollector:
             "CPU・メモリ・OS情報などの\n詳細情報をテキストで出力",
             "Success.TButton",
             self.export_msinfo,
-            row=0, col=1
+            row=1, col=0, colspan=1
         )
-        
-        # カード3: 一括取得（大きなカード）
+
+        # カード3: 一括取得
         card3 = self.create_card(
             cards_frame,
             "🚀 すべて一括取得",
             "上記の処理をまとめて実行\n（推奨オプション）",
             "Warning.TButton",
             self.export_all,
-            row=1, col=0, colspan=2, large=True
+            row=2, col=0, colspan=1, large=True
         )
-        
-        # グリッドの重み設定
+
+        # グリッドの重み設定を1列に変更
         cards_frame.grid_columnconfigure(0, weight=1)
-        cards_frame.grid_columnconfigure(1, weight=1)
         cards_frame.grid_rowconfigure(0, weight=1)
         cards_frame.grid_rowconfigure(1, weight=1)
+        cards_frame.grid_rowconfigure(2, weight=1)
     
     def create_card(self, parent, title, description, button_style, command, 
                    row, col, colspan=1, large=False):
