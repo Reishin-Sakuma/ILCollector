@@ -31,6 +31,9 @@ class ModernILCollector:
             'text_secondary': '#cccccc',  # グレー文字
             'border': '#4a4a4a'           # ボーダー色
         }
+
+        # フォント
+        self.font_family = 'メイリオ'
         
         # ウィンドウの背景色を設定
         self.root.configure(bg=self.colors['bg_primary'])
@@ -59,7 +62,7 @@ class ModernILCollector:
                             borderwidth=0,
                             relief='flat',
                             padding=(40, 25),  # 左右のパディングを20→30、上下を15→20に増加
-                            font=('Segoe UI', 12, 'bold'))  # フォントサイズを11→12に増加
+                            font=(self.font_family, 12, 'bold'))  # フォントサイズを11→12に増加
         
         # プライマリボタン（青）
         self.style.configure('Primary.TButton', 
@@ -67,7 +70,7 @@ class ModernILCollector:
                             foreground='white',
                             focuscolor='none',
                             padding=(40, 25),  # パディング設定を追加
-                            font=('Segoe UI', 12, 'bold'))  # フォント設定を追加)
+                            font=(self.font_family, 12, 'bold'))  # フォント設定を追加)
         
         # 成功ボタン（緑）
         self.style.configure('Success.TButton', 
@@ -75,7 +78,7 @@ class ModernILCollector:
                             foreground='white',
                             focuscolor='none',
                             padding=(40, 25),  # パディング設定を追加
-                            font=('Segoe UI', 12, 'bold'))  # フォント設定を追加)
+                            font=(self.font_family, 12, 'bold'))  # フォント設定を追加)
         
         # 警告ボタン（オレンジ）
         self.style.configure('Warning.TButton', 
@@ -83,7 +86,7 @@ class ModernILCollector:
                             foreground='white',
                             focuscolor='none',
                             padding=(40, 25),  # パディング設定を追加
-                            font=('Segoe UI', 12, 'bold'))  # フォント設定を追加)
+                            font=(self.font_family, 12, 'bold'))  # フォント設定を追加)
         
         # フォルダボタン（黄）
         self.style.configure('Folder.TButton', 
@@ -91,7 +94,7 @@ class ModernILCollector:
                             foreground='black',
                             focuscolor='none',
                             padding=(40, 25),  # パディング設定を追加
-                            font=('Segoe UI', 12, 'bold'))  # フォント設定を追加)
+                            font=(self.font_family, 12, 'bold'))  # フォント設定を追加)
     
     def create_modern_widgets(self):
         """モダンなUIコンポーネントを作成"""
@@ -164,7 +167,7 @@ class ModernILCollector:
         title_label = tk.Label(
             header_frame,
             text="🔍 ILCollector",
-            font=('Segoe UI', 28, 'bold'),
+            font=(self.font_family, 28, 'bold'),
             fg=self.colors['text_primary'],
             bg=self.colors['bg_primary']
         )
@@ -174,7 +177,7 @@ class ModernILCollector:
         subtitle_label = tk.Label(
             header_frame,
             text="Windows Server イベントログ & システム情報収集ツール",
-            font=('Segoe UI', 12),
+            font=(self.font_family, 12),
             fg=self.colors['text_secondary'],
             bg=self.colors['bg_primary']
         )
@@ -251,7 +254,7 @@ class ModernILCollector:
         title_label = tk.Label(
             content_frame,
             text=title,
-            font=('Segoe UI', 16 if large else 14, 'bold'),
+            font=(self.font_family, 16 if large else 14, 'bold'),
             fg=self.colors['text_primary'],
             bg=self.colors['bg_card']
         )
@@ -261,7 +264,7 @@ class ModernILCollector:
         desc_label = tk.Label(
             content_frame,
             text=description,
-            font=('Segoe UI', 10),
+            font=(self.font_family, 10),
             fg=self.colors['text_secondary'],
             bg=self.colors['bg_card'],
             justify="center"
@@ -309,7 +312,7 @@ class ModernILCollector:
         self.folder_label = tk.Label(
             footer_frame,
             text=f"出力先: {self.output_folder}",
-            font=('Segoe UI', 9),
+            font=(self.font_family, 9),
             fg=self.colors['text_secondary'],
             bg=self.colors['bg_primary'],
             wraplength=740,
@@ -348,7 +351,7 @@ class ModernILCollector:
         success_label = tk.Label(
             header_frame,
             text="✅",
-            font=('Segoe UI', 32),
+            font=(self.font_family, 32),
             bg=self.colors['bg_card']
         )
         success_label.pack()
@@ -356,7 +359,7 @@ class ModernILCollector:
         title_label = tk.Label(
             header_frame,
             text=title,
-            font=('Segoe UI', 16, 'bold'),
+            font=(self.font_family, 16, 'bold'),
             fg=self.colors['text_primary'],
             bg=self.colors['bg_card']
         )
@@ -366,7 +369,7 @@ class ModernILCollector:
         msg_label = tk.Label(
             content_frame,
             text=message,
-            font=('Segoe UI', 11),
+            font=(self.font_family, 11),
             fg=self.colors['text_secondary'],
             bg=self.colors['bg_card']
         )
@@ -376,7 +379,7 @@ class ModernILCollector:
         files_label = tk.Label(
             content_frame,
             text=files_info,
-            font=('Segoe UI', 9),
+            font=(self.font_family, 9),
             fg=self.colors['text_secondary'],
             bg=self.colors['bg_card'],
             justify="left",
@@ -427,7 +430,7 @@ class ModernILCollector:
         icon_label = tk.Label(
             content_frame,
             text="⚙️",
-            font=('Segoe UI', 24),
+            font=(self.font_family, 24),
             bg=self.colors['bg_card']
         )
         icon_label.pack(pady=(15, 15))  # 上下の余白を20,10→15,15に調整
@@ -436,7 +439,7 @@ class ModernILCollector:
         msg_label = tk.Label(
             content_frame,
             text=message,
-            font=('Segoe UI', 11),
+            font=(self.font_family, 11),
             fg=self.colors['text_primary'],
             bg=self.colors['bg_card'],
             wraplength=350,  # 文字折り返し幅を300→350に拡大
