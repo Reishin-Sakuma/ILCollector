@@ -14,8 +14,8 @@ class ILCollector:
         # メインウィンドウの作成
         self.root = tk.Tk()
         self.root.title("ILCollector - イベントログ収集ツール")
-        self.root.geometry("500x400")  # 幅を広げる
-        self.root.resizable(True, False)  # 横方向のリサイズを許可
+        self.root.geometry("700x500")  # 幅と高さを両方とも広げる
+        self.root.resizable(True, True)  # 縦横両方向のリサイズを許可
         
         # 処理中メッセージウィンドウ用
         self.progress_window = None
@@ -51,9 +51,12 @@ class ILCollector:
         )
         desc_label.pack(pady=10)
         
-        # イベントログ出力ボタン
+        # イベントログ出力ボタンと説明
+        eventlog_frame = tk.Frame(self.root)
+        eventlog_frame.pack(pady=10, padx=20, fill="x")
+        
         eventlog_btn = tk.Button(
-            self.root,
+            eventlog_frame,
             text="イベントログをCSV出力",
             font=("Arial", 12),
             bg="lightblue",
@@ -61,11 +64,23 @@ class ILCollector:
             height=2,
             command=self.export_eventlogs
         )
-        eventlog_btn.pack(pady=10)
+        eventlog_btn.pack(side=tk.LEFT)
         
-        # msinfo32出力ボタン
+        eventlog_desc = tk.Label(
+            eventlog_frame,
+            text="WindowsのSystemログとApplicationログを\nCSVファイルとして出力します",
+            font=("Arial", 9),
+            fg="gray",
+            justify="left"
+        )
+        eventlog_desc.pack(side=tk.LEFT, padx=(15, 0))
+        
+        # msinfo32出力ボタンと説明
+        msinfo_frame = tk.Frame(self.root)
+        msinfo_frame.pack(pady=10, padx=20, fill="x")
+        
         msinfo_btn = tk.Button(
-            self.root,
+            msinfo_frame,
             text="システム情報を出力",
             font=("Arial", 12),
             bg="lightgreen",
@@ -73,11 +88,23 @@ class ILCollector:
             height=2,
             command=self.export_msinfo
         )
-        msinfo_btn.pack(pady=10)
+        msinfo_btn.pack(side=tk.LEFT)
         
-        # 一括取得ボタン（新規追加）
+        msinfo_desc = tk.Label(
+            msinfo_frame,
+            text="CPU、メモリ、OS情報などの\nシステム詳細情報をテキストファイルで出力します",
+            font=("Arial", 9),
+            fg="gray",
+            justify="left"
+        )
+        msinfo_desc.pack(side=tk.LEFT, padx=(15, 0))
+        
+        # 一括取得ボタンと説明
+        batch_frame = tk.Frame(self.root)
+        batch_frame.pack(pady=10, padx=20, fill="x")
+        
         batch_btn = tk.Button(
-            self.root,
+            batch_frame,
             text="すべてのログ・情報を一括取得",
             font=("Arial", 12, "bold"),
             bg="orange",
@@ -85,7 +112,28 @@ class ILCollector:
             height=2,
             command=self.export_all
         )
-        batch_btn.pack(pady=10)
+        batch_btn.pack(side=tk.LEFT)
+        
+        batch_desc = tk.Label(
+            batch_frame,
+            text="上記の2つの処理を\nまとめて実行します（推奨）",
+            font=("Arial", 9),
+            fg="gray",
+            justify="left"
+        )
+        batch_desc.pack(side=tk.LEFT, padx=(15, 0))
+        
+        # 出力フォルダを開くボタン（新規追加）
+        folder_btn = tk.Button(
+            self.root,
+            text="📁 出力フォルダを開く",
+            font=("Arial", 12),
+            bg="lightyellow",
+            width=25,
+            height=2,
+            command=self.open_output_folder
+        )
+        folder_btn.pack(pady=15)
         
         # 出力フォルダ表示（改善）
         self.folder_label = tk.Label(
@@ -93,10 +141,10 @@ class ILCollector:
             text=f"出力先: {self.output_folder}",
             font=("Arial", 9),
             fg="gray",
-            wraplength=480,  # 文字列の折り返し幅を設定
+            wraplength=680,  # 文字列の折り返し幅を設定
             justify="center"
         )
-        self.folder_label.pack(pady=15)
+        self.folder_label.pack(pady=10)
         
         # 終了ボタン
         exit_btn = tk.Button(
@@ -113,14 +161,19 @@ class ILCollector:
         # 出力パスの文字数を測定
         path_length = len(self.output_folder)
         
-        # 基本幅
-        base_width = 500
+        # 基本サイズ
+        base_width = 700
+        base_height = 500
         
         # パスの長さに応じて幅を調整（1文字あたり約6ピクセル）
-        if path_length > 70:
-            additional_width = (path_length - 70) * 6
-            new_width = min(base_width + additional_width, 800)  # 最大800ピクセル
-            self.root.geometry(f"{new_width}x400")
+        if path_length > 90:
+            additional_width = (path_length - 90) * 6
+            new_width = min(base_width + additional_width, 1000)  # 最大1000ピクセル
+            
+            # 高さも少し調整（説明文が増えたため）
+            new_height = min(base_height + 50, 600)  # 最大600ピクセル
+            
+            self.root.geometry(f"{new_width}x{new_height}")
             
             # ラベルの折り返し幅も調整
             self.folder_label.config(wraplength=new_width - 20)
