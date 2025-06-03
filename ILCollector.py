@@ -115,7 +115,14 @@ class ModernILCollector:
         
         # メインコンテナをスクロール可能フレーム内に作成
         main_container = tk.Frame(scrollable_frame, bg=self.colors['bg_primary'])
-        main_container.pack(fill="both", expand=True, padx=30, pady=30)
+        main_container.pack(padx=30, pady=30)  # fill="both", expand=Trueを削除
+
+        # 中央配置用の外側フレームを追加
+        center_frame = tk.Frame(scrollable_frame, bg=self.colors['bg_primary'])
+        center_frame.pack(fill="both", expand=True)
+
+        main_container = tk.Frame(center_frame, bg=self.colors['bg_primary'])
+        main_container.pack(padx=30, pady=30, anchor="center")
         
         # ヘッダーセクション
         self.create_header(main_container)
@@ -403,7 +410,7 @@ class ModernILCollector:
         """モダンな処理中ダイアログを表示"""
         self.progress_window = tk.Toplevel(self.root)
         self.progress_window.title("処理中")
-        self.progress_window.geometry("350x150")
+        self.progress_window.geometry("400x200")  # 幅350→400px、高さ150→200pxに変更
         self.progress_window.resizable(False, False)
         self.progress_window.configure(bg=self.colors['bg_primary'])
         self.progress_window.transient(self.root)
@@ -423,7 +430,7 @@ class ModernILCollector:
             font=('Segoe UI', 24),
             bg=self.colors['bg_card']
         )
-        icon_label.pack(pady=(20, 10))
+        icon_label.pack(pady=(15, 15))  # 上下の余白を20,10→15,15に調整
         
         # メッセージ
         msg_label = tk.Label(
@@ -432,11 +439,10 @@ class ModernILCollector:
             font=('Segoe UI', 11),
             fg=self.colors['text_primary'],
             bg=self.colors['bg_card'],
-            wraplength=300,
+            wraplength=350,  # 文字折り返し幅を300→350に拡大
             justify="center"
         )
-        msg_label.pack(pady=(0, 20))
-    
+        msg_label.pack(pady=(0, 15))  # 下の余白を20→15に調整    
     def show_modern_error(self, title, message):
         """モダンなエラーダイアログを表示"""
         messagebox.showerror(title, message)
