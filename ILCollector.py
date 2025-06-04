@@ -11,10 +11,12 @@ import threading
 import sys
 
 class ModernILCollector:
+    WINDOW_TITLE_SUFFIX = "ILCollector - イベントログ収集ツール"
+
     def __init__(self):
         # メインウィンドウの作成
         self.root = tk.Tk()
-        self.root.title("ILCollector - イベントログ収集ツール")
+        self.root.title(self.WINDOW_TITLE_SUFFIX)
         self.root.geometry("800x600")
         self.root.minsize(400, 300)  # 最小サイズを設定
         self.root.resizable(True, True)
@@ -331,7 +333,7 @@ class ModernILCollector:
     def show_modern_completion(self, title, message, files_info):
         """モダンな完了ダイアログを表示"""
         dialog = tk.Toplevel(self.root)
-        dialog.title(title)
+        dialog.title(f"{title} - {self.WINDOW_TITLE_SUFFIX}")
         dialog.geometry("500x350")
         dialog.resizable(False, False)
         dialog.configure(bg=self.colors['bg_primary'])
@@ -413,7 +415,7 @@ class ModernILCollector:
     def show_modern_progress(self, message):
         """モダンな処理中ダイアログを表示"""
         self.progress_window = tk.Toplevel(self.root)
-        self.progress_window.title("処理中")
+        self.progress_window.title(f"処理中 - {self.WINDOW_TITLE_SUFFIX}")
         self.progress_window.geometry("400x200")  # 幅350→400px、高さ150→200pxに変更
         self.progress_window.resizable(False, False)
         self.progress_window.configure(bg=self.colors['bg_primary'])
@@ -449,7 +451,7 @@ class ModernILCollector:
         msg_label.pack(pady=(0, 15))  # 下の余白を20→15に調整    
     def show_modern_error(self, title, message):
         """モダンなエラーダイアログを表示"""
-        messagebox.showerror(title, message)
+        messagebox.showerror(f"{title} - {self.WINDOW_TITLE_SUFFIX}", message)
     
     def center_window(self, window):
         """ウィンドウを親ウィンドウの中央に配置"""
@@ -713,7 +715,7 @@ if __name__ == "__main__":
             root.destroy()
 
         dialog = tk.Toplevel()
-        dialog.title("権限不足")
+        dialog.title(f"権限不足 - ILCollector - イベントログ収集ツール")
         dialog.geometry("400x180")
         dialog.resizable(False, False)
         dialog.grab_set()
