@@ -185,6 +185,16 @@ class ModernILCollector:
             bg=self.colors['bg_primary']
         )
         subtitle_label.pack(pady=(5, 0))
+
+        # 注意文
+        subtitle_label = tk.Label(
+            header_frame,
+            text="※本ツールは弊社による障害対応を支援・補助するものですが、復旧を保証するものではありません。",
+            font=(self.font_family, 10),
+            fg=self.colors['text_secondary'],
+            bg=self.colors['bg_primary']
+        )
+        subtitle_label.pack(pady=(5, 0))
         
         # 区切り線
         separator = tk.Frame(header_frame, height=2, bg=self.colors['accent_blue'])
