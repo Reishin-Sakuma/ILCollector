@@ -334,14 +334,11 @@ class ModernILCollector:
         """モダンな完了ダイアログを表示"""
         dialog = tk.Toplevel(self.root)
         dialog.title(f"{title} - {self.WINDOW_TITLE_SUFFIX}")
-        dialog.geometry("500x350")
+        # dialog.geometry("500x350")  # ← この行を削除
         dialog.resizable(False, False)
         dialog.configure(bg=self.colors['bg_primary'])
         dialog.transient(self.root)
         dialog.grab_set()
-        
-        # 中央配置
-        self.center_window(dialog)
         
         # メインコンテンツ
         content_frame = tk.Frame(dialog, bg=self.colors['bg_card'])
@@ -388,7 +385,7 @@ class ModernILCollector:
             justify="left",
             wraplength=460
         )
-        files_label.pack(pady=(0, 20))
+        files_label.pack(pady=(5, 10))
         
         # ボタンフレーム
         button_frame = tk.Frame(content_frame, bg=self.colors['bg_card'])
@@ -399,7 +396,7 @@ class ModernILCollector:
             button_frame,
             text="📁 フォルダを開く",
             style="Folder.TButton",
-            command=lambda: [self.open_output_folder(), dialog.destroy()]
+            command=lambda: [self.open_output_folder()]
         )
         open_btn.pack(side="left", padx=(0, 10))
         
@@ -411,6 +408,13 @@ class ModernILCollector:
             command=dialog.destroy
         )
         ok_btn.pack(side="left")
+
+        # 内容に合わせてウィンドウサイズを自動調整
+        dialog.update_idletasks()
+        dialog.geometry("")  # サイズ自動調整
+
+        # 中央配置
+        self.center_window(dialog)
     
     def show_modern_progress(self, message):
         """モダンな処理中ダイアログを表示"""
