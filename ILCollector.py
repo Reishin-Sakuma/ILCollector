@@ -8,6 +8,7 @@ import win32evtlog
 import win32evtlogutil
 import win32con
 import threading
+import sys
 
 class ModernILCollector:
     def __init__(self):
@@ -688,17 +689,64 @@ class ModernILCollector:
 # メイン実行部分
 if __name__ == "__main__":
     # 管理者権限の確認
+    import ctypes
+
+    # グローバル変数として宣言
+    should_start_app = True
+
+    def show_admin_dialog():
+        # 関数内でグローバル変数を使う
+        global should_start_app
+        root = tk.Tk()
+        root.withdraw()  # メインウィンドウ非表示
+
+        def on_continue():
+            global should_start_app
+            should_start_app = True
+            root.quit()
+            root.destroy()
+
+        def on_exit():
+            global should_start_app
+            should_start_app = False
+            root.quit()
+            root.destroy()
+
+        dialog = tk.Toplevel()
+        dialog.title("権限不足")
+        dialog.geometry("400x180")
+        dialog.resizable(False, False)
+        dialog.grab_set()
+        dialog.configure(bg="#2d2d2d")
+
+        label = tk.Label(
+            dialog,
+            text="このプログラムは管理者権限で実行することを推奨します。\n一部の機能が正常に動作しない可能性があります。",
+            bg="#2d2d2d",
+            fg="#ffffff",
+            font=("メイリオ", 11),
+            wraplength=360,
+            justify="center"
+        )
+        label.pack(pady=(30, 20))
+
+        btn_frame = tk.Frame(dialog, bg="#2d2d2d")
+        btn_frame.pack(pady=(0, 20))
+
+        continue_btn = ttk.Button(btn_frame, text="続行", command=on_continue)
+        continue_btn.pack(side="left", padx=15)
+        exit_btn = ttk.Button(btn_frame, text="終了", command=on_exit)
+        exit_btn.pack(side="left", padx=15)
+
+        root.mainloop()
+
     try:
-        import ctypes
         if not ctypes.windll.shell32.IsUserAnAdmin():
-            messagebox.showwarning(
-                "権限不足", 
-                "このプログラムは管理者権限で実行することを推奨します。\n" +
-                "一部の機能が正常に動作しない可能性があります。"
-            )
-    except:
+            show_admin_dialog()
+    except Exception:
         pass
-    
+
     # アプリケーションの起動
-    app = ModernILCollector()
-    app.run()
+    if should_start_app:
+        app = ModernILCollector()
+        app.run()
