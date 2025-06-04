@@ -30,6 +30,7 @@ class ModernILCollector:
             'accent_green': '#107c10',    # モダングリーン
             'accent_orange': '#ff8c00',   # モダンオレンジ
             'accent_yellow': '#ffb900',   # モダンイエロー
+            'accent_gray': '#2d2d2d',     # グレー
             'text_primary': '#ffffff',    # 白文字
             'text_secondary': '#cccccc',  # グレー文字
             'border': '#4a4a4a'           # ボーダー色
@@ -185,6 +186,10 @@ class ModernILCollector:
             bg=self.colors['bg_primary']
         )
         subtitle_label.pack(pady=(5, 0))
+
+        # 区切り線
+        separator = tk.Frame(header_frame, height=1, bg=self.colors['accent_gray'])
+        separator.pack(fill="x", pady=(20, 0))
 
         # 注意文
         subtitle_label = tk.Label(
