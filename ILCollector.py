@@ -322,6 +322,18 @@ class ModernILCollector:
             justify="center"
         )
         self.folder_label.pack(pady=(15, 0))
+
+        # コピーライト
+        self.folder_label = tk.Label(
+            footer_frame,
+            text=f"© 2025 Reishin Sakuma",
+            font=(self.font_family, 9),
+            fg=self.colors['text_secondary'],
+            bg=self.colors['bg_primary'],
+            wraplength=740,
+            justify="center"
+        )
+        self.folder_label.pack(pady=(15, 0))
     
     def open_output_folder(self):
         """出力フォルダをエクスプローラーで開く"""
